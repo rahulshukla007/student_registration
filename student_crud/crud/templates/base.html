@@ -1,6 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <style>
+      #right-panel-link {
+      position: absolute;
+      top: 24px;
+      right: 88px;
+    }
+    #namelink{
+      font-weight: bold;
+      font-size: 27px;
+      color: blueviolet;
+      position: absolute;
+      top: 25px;
+      right: 187px;
+    }
+    </style>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,8 +26,12 @@
     <title>Student Registration</title>
   </head>
   <body>
+    <a class="btn btn-primary pull-right" id="right-panel-link" href="{% url 'Logoutuser' %}">Logout</a>
+
+    <span id="namelink">Welcome, {{request.user}}</span>
       <div class="container mt-5">
         <h1>Student Registration Form</h1>
+
         {% block content %}         {% endblock content %}
       </div>
 
