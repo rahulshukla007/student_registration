@@ -82,9 +82,9 @@ DATABASES = {
 
         'NAME': 'studentdb',
 
-        'USER': 'rahul',
+        'USER': 'postgres',
 
-        'PASSWORD': '123456',
+        'PASSWORD': '461775',
 
         'HOST': '127.0.0.1',
 

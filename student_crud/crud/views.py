@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from . decorators import unauthenticated_user
 # Create your views here.
 
 
@@ -51,39 +52,36 @@ def delete(request, id):
     return redirect('home')
 
 
+@unauthenticated_user
 def register(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    else:
-        if request.method == "POST":
-            fm = CreateUserForm(request.POST)
-            print("fm", fm)
-            if fm.is_valid():
-                fm.save()
-                user = fm.cleaned_data.get('username')
-                messages.success(request, f'account was creater for {user}')
-                return redirect('login')
+    if request.method == "POST":
+        fm = CreateUserForm(request.POST)
+        print("fm", fm)
+        if fm.is_valid():
+            fm.save()
+            user = fm.cleaned_data.get('username')
+            messages.success(request, f'account was creater for {user}')
+            return redirect('login')
     form = CreateUserForm()
     context = {'form':form}
     return render(request, 'signup.html', context)
 
+
+@unauthenticated_user
 def loginPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    else:
-        if request.method == 'POST':
-            print(request.POST)
-            username = request.POST.get('username')
-            print('username', username)
-            password = request.POST.get('password')
-            print('password', password)
-            user = authenticate(request, username = username, password = password)
-            print('user' , user)
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-            else:
-                messages.info(request, 'username or password is incorrct')
+    if request.method == 'POST':
+        print(request.POST)
+        username = request.POST.get('username')
+        print('username', username)
+        password = request.POST.get('password')
+        print('password', password)
+        user = authenticate(request, username = username, password = password)
+        print('user' , user)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.info(request, 'username or password is incorrct')
 
 
     context = {}
